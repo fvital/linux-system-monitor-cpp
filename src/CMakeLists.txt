@@ -6,6 +6,7 @@ add_library(monitor_lib
     process.cpp 
     processor.cpp 
     system.cpp 
+    meminfo.cpp
 )
 
 target_include_directories(monitor_lib PUBLIC ${PROJECT_SOURCE_DIR}/include)
