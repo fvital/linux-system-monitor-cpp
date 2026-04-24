@@ -118,12 +118,15 @@ modified as part of this project.
 # Build
 make build
 
-# Build (CMake)
-cmake -B build
-cmake --build build
+# Build (CMake via CMakePresets.json)
+cmake --preset default
+cmake --build --preset default
 
 # Run
-./build/monitor
+./build/src/monitor
+
+# Run tests
+ctest --preset default
 
 # Debug build (includes debug symbols)
 make debug

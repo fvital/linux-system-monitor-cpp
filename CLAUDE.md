@@ -44,12 +44,12 @@ See README.md for full file listing. Key constraints:
 ```bash
 # Make
 make build
-./build/monitor
+./build/src/monitor
 
 # CMake (via CMakePresets.json)
 cmake --preset default
 cmake --build --preset default
-./build/monitor
+./build/src/monitor
 
 # Run tests
 ctest --preset default
