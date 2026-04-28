@@ -21,7 +21,7 @@ namespace LinuxParser
 
   // System
   [[deprecated("Use MemInfo from 'meminfo.h' to retrieve, store and access this info instead.")]] float MemoryUtilization(const std::string &root = "/");
-  float UpTime(const std::string &root = "/");
+  double UpTime(const std::string &root = "/");
   std::vector<int> Pids(const std::string &root = "/");
   int TotalProcesses(const std::string &root = "/");
   int RunningProcesses();

@@ -4,6 +4,7 @@ add_executable(
   linux_parser_test.cpp
   meminfo_test.cpp
   format_test.cpp
+  stat_test.cpp
 )
 target_link_libraries(unit_tests
 PRIVATE
