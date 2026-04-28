@@ -41,5 +41,5 @@ TEST(ProcessorT, Utilization)
     Processor p1;
     p1.update_stat(kFixturePath);
 
-    EXPECT_FLOAT_EQ(0.01108854092, p1.Utilization(kFixturePath));
+    EXPECT_FLOAT_EQ(0.01108854092, p1.Utilization());
 }
