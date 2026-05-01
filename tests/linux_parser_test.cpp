@@ -14,7 +14,7 @@ TEST(LinuxParserT, OperatingSystem1)
 }
 TEST(LinuxParserT, OperatingSystem2)
 {
-    EXPECT_EQ("Ubuntu 22.04.5 LTS", LinuxParser::OperatingSystem(TEST_FIXTURE_DIR));
+    EXPECT_EQ("Test Ubuntu 22.04.5 LTS", LinuxParser::OperatingSystem(TEST_FIXTURE_DIR));
 }
 
 TEST(LinuxParserT, Kernel1)
@@ -24,7 +24,7 @@ TEST(LinuxParserT, Kernel1)
 
 TEST(LinuxParserT, Kernel2)
 {
-    EXPECT_EQ("5.15.148-tegra", LinuxParser::Kernel(TEST_FIXTURE_DIR));
+    EXPECT_EQ("0.0.0-kernelTest", LinuxParser::Kernel(TEST_FIXTURE_DIR));
 }
 
 TEST(LinuxParserT, Pids1)

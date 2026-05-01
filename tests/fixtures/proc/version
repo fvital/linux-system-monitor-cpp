@@ -1,1 +1,1 @@
-Linux version 5.15.148-tegra (buildbrain@mobile-u64-6354-d6000) (aarch64-buildroot-linux-gnu-gcc.br_real (Buildroot 2022.08) 11.3.0, GNU ld (GNU Binutils) 2.38) #1 SMP PREEMPT Thu Sep 18 15:08:33 PDT 2025
+Linux version 0.0.0-kernelTest (buildbrain@mobile-u64-6354-d6000) (aarch64-buildroot-linux-gnu-gcc.br_real (Buildroot 2022.08) 11.3.0, GNU ld (GNU Binutils) 2.38) #1 SMP PREEMPT Thu Sep 18 15:08:33 PDT 2025

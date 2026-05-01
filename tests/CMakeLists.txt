@@ -2,8 +2,10 @@
 add_executable(
   unit_tests
   linux_parser_test.cpp
+  system_test.cpp
   meminfo_test.cpp
   processor_test.cpp
+  process_test.cpp
   format_test.cpp
   stat_test.cpp
 )
