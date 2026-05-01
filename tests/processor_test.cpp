@@ -43,3 +43,19 @@ TEST(ProcessorT, Utilization)
 
     EXPECT_FLOAT_EQ(0.01108854092, p1.Utilization());
 }
+
+TEST(ProcessorT, procs_running)
+{
+    Processor p1;
+    p1.update_stat(kFixturePath);
+
+    EXPECT_EQ(1, p1.get_procs_running());
+}
+
+TEST(ProcessorT, total_cumulative_processes)
+{
+    Processor p1;
+    p1.update_stat(kFixturePath);
+
+    EXPECT_EQ(83061, p1.get_total_cumulative_processes());
+}

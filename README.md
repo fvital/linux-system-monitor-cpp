@@ -56,20 +56,20 @@ All implementation work in this repository is my own.
 
 ### Core Classes and Namespaces
 
-- [ ] **`LinuxParser` namespace** — parses `/proc` and `/etc` filesystem entries
+- [x] **`LinuxParser` namespace** — parses `/proc` and `/etc` filesystem entries
   to provide system-wide data (OS, kernel, uptime, memory utilization, total
   and running process counts, aggregate CPU jiffie counts across all states)
   and per-process data (PID list, command, RAM, UID, username, uptime, and
   per-process active jiffies for CPU utilization calculation)
-- [ ] **`Format` namespace** — converts elapsed time in seconds to a
+- [x] **`Format` namespace** — converts elapsed time in seconds to a
   `HH:MM:SS` string (e.g. `30:48:17`) used by the display layer for system
   and per-process uptime
-- [ ] **`Processor` class** — computes and exposes aggregate CPU utilization
+- [x] **`Processor` class** — computes and exposes aggregate CPU utilization
   as a float, using `LinuxParser` CPU data internally
-- [ ] **`Process` class** — exposes per-process attributes (PID, user, command,
+- [x] **`Process` class** — exposes per-process attributes (PID, user, command,
   CPU utilization, RAM, uptime) and implements `operator<` for sorting the
   process list
-- [ ] **`System` class** — top-level aggregator; owns the `Processor` and
+- [x] **`System` class** — top-level aggregator; owns the `Processor` and
   `Process` list, and exposes OS name, kernel version, memory utilization,
   total process count, running process count, and uptime
 
@@ -80,7 +80,7 @@ modified as part of this project.
 
 - [ ] **Dynamic CPU utilization** — compute utilization from a rolling delta
   between two samples rather than a cumulative average from boot
-- [ ] **CMake modernization** — the starter `CMakeLists.txt` has several issues
+- [x] **CMake modernization** — the starter `CMakeLists.txt` has several issues
   worth addressing: `cmake_minimum_required` is set to 2.6 (circa 2008),
   `file(GLOB ...)` is used for sources (explicitly discouraged by CMake —
   silent build failures when files are added or removed), and there is no
@@ -89,7 +89,7 @@ modified as part of this project.
 - [ ] **Abstract base classes** — introduce interfaces via abstract classes and
   pure virtual functions to decouple the display layer from Linux-specific
   implementations, making the design more portable
-- [ ] **`const` correctness audit** — all getters `const`-qualified, read-only
+- [x] **`const` correctness audit** — all getters `const`-qualified, read-only
   parameters passed as `const&`
 - [ ] **Unit tests** — GoogleTest coverage for `LinuxParser` parsing functions
 - [ ] **GitHub Actions CI** — automated build on push, with `-Werror` enabled

@@ -15,7 +15,11 @@ class CpuStat
 public:
     long user, nice, system, idle, iowait, irq, softirq, steal, guest, guest_nice; ///< Measured in jiffies.
     CpuStat() = default;
-    CpuStat(long user, long nice, long system, long idle, long iowait, long irq, long softirq, long steal, long guest, long guest_nice);
+    CpuStat(long user, long nice,
+            long system, long idle,
+            long iowait, long irq,
+            long softirq, long steal,
+            long guest, long guest_nice);
     long total() const;  ///< Sum of all time fields (excludes guest, which is already in user).
     long active() const; ///< Total minus idle and iowait.
     float utilization() const;

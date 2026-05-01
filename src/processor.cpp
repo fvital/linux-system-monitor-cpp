@@ -36,9 +36,17 @@ Processor &Processor::update_stat(const std::string &root)
                 }
                 linestream >> cpus_[idx];
             }
+            else if (name == "processes")
+            {
+                linestream >> total_cumulative_processes_;
+            }
+            else if (name == "procs_running")
+            {
+                linestream >> procs_running_;
+            }
             else
             {
-                break;
+                continue;
             }
         }
     }
@@ -58,4 +66,13 @@ const CpuStat &Processor::get_cpu(size_t idx) const
 int Processor::get_cpu_count() const
 {
     return cpus_.size();
+}
+
+int Processor::get_procs_running() const
+{
+    return procs_running_;
+}
+int Processor::get_total_cumulative_processes() const
+{
+    return total_cumulative_processes_;
 }

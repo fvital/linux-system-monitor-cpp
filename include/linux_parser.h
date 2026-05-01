@@ -23,8 +23,10 @@ namespace LinuxParser
   [[deprecated("Use MemInfo from 'meminfo.h' to retrieve, store and access this info instead.")]] float MemoryUtilization(const std::string &root = "/");
   double UpTime(const std::string &root = "/");
   std::vector<int> Pids(const std::string &root = "/");
+
+  /// Returns total currently active processes, not the cumulative total since last boot.
   int TotalProcesses(const std::string &root = "/");
-  int RunningProcesses();
+  [[deprecated]] int RunningProcesses();
   std::string OperatingSystem(const std::string &root = "/");
   std::string Kernel(const std::string &root = "/");
 
@@ -45,15 +47,15 @@ namespace LinuxParser
   std::vector<std::string> CpuUtilization(const std::string &root = "/");
   long Jiffies(const std::string &root = "/");
   long ActiveJiffies(const std::string &root = "/");
-  long ActiveJiffies(int pid);
+  [[deprecated]] long ActiveJiffies(int pid);
   long IdleJiffies(const std::string &root = "/");
 
   // Processes
-  std::string Command(int pid);
-  std::string Ram(int pid);
-  std::string Uid(int pid);
-  std::string User(int pid);
-  long int UpTime(int pid);
+  [[deprecated]] std::string Command(int pid);
+  [[deprecated]] std::string Ram(int pid);
+  [[deprecated]] std::string Uid(int pid);
+  [[deprecated]] std::string User(int pid);
+  [[deprecated]] long int UpTime(int pid);
 }; // namespace LinuxParser
 
 #endif

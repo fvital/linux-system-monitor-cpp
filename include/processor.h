@@ -19,11 +19,15 @@ public:
     const CpuStat &get_cpu() const;
     const CpuStat &get_cpu(size_t idx) const;
     int get_cpu_count() const;
+    int get_procs_running() const;
+    int get_total_cumulative_processes() const;
 
     // TODO: Declare any necessary private members
 private:
     CpuStat agg_cpu_;
     std::vector<CpuStat> cpus_;
+    int procs_running_ = -1;
+    int total_cumulative_processes_ = -1; ///< Number of forks since boot.
 };
 
 #endif // PROCESSOR_H
