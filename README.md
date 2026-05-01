@@ -8,7 +8,11 @@ A terminal-based Linux system monitor written in C++, displaying real-time
 CPU utilization, memory usage, and per-process statistics using an ncurses UI.
 
 *Target output (once complete):*
-![System Monitor Screenshot](images/monitor.png)
+![System Monitor Screenshot](images/monitor(original_target).png)
+
+
+*Current output:*
+![System Monitor Screenshot](images/monitor(current).png)
 
 ---
 
