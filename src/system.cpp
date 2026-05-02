@@ -18,25 +18,18 @@ using std::size_t;
 using std::string;
 using std::vector;
 
-/*You need to complete the mentioned TODOs in order to satisfy the rubric criteria "The student will be able to extract and display basic data about the system."
-
-You need to properly format the uptime. Refer to the comments mentioned in format. cpp for formatting the uptime.*/
-
-// TODO: Return the system's CPU
 Processor &System::Cpu()
 {
     cpu_.update_stat();
     return cpu_;
 }
 
-// TODO: Return a container composed of the system's processes
 vector<Process> &System::Processes()
 {
     clean_process_list(root_).update_process_list(root_);
     return processes_;
 }
 
-// TODO: Return the system's kernel identifier (string)
 std::string System::Kernel()
 {
     if (!kernel_.empty())
@@ -45,7 +38,6 @@ std::string System::Kernel()
     return kernel_;
 }
 
-// TODO: Return the system's memory utilization
 float System::MemoryUtilization()
 {
     std::ifstream ifs{root_ +
@@ -56,7 +48,6 @@ float System::MemoryUtilization()
     return (m1.mem_total - m1.mem_free) / m1.mem_total;
 }
 
-// TODO: Return the operating system name
 std::string System::OperatingSystem()
 {
     if (!operating_system_.empty())
@@ -65,16 +56,13 @@ std::string System::OperatingSystem()
     return operating_system_;
 }
 
-// TODO: Return the number of processes actively running on the system
 int System::RunningProcesses()
 {
     return Cpu().get_procs_running();
 }
 
-// TODO: Return the total number of processes on the system
 int System::TotalProcesses() const { return LinuxParser::TotalProcesses(root_); }
 
-// TODO: Return the number of seconds since the system started running
 long System::UpTime() const
 {
     return static_cast<long>(std::round(LinuxParser::UpTime(root_)));
@@ -143,8 +131,15 @@ System &System::update_process_list(const std::string &root)
 
 std::string System::User(int uid) const
 {
-    // TODO: Deal with case of uid not present in user_map_.
-    return user_map_.at(uid);
+    auto user_it = user_map_.find(uid);
+    if (user_it == user_map_.end())
+    {
+        return "_unknown_";
+    }
+    else
+    {
+        return user_it->second;
+    }
 }
 
 System::System(const std::string &root) : root_{root}

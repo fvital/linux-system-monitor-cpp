@@ -1,4 +1,3 @@
-#include <cassert>
 #include <sstream>
 #include <string>
 #include <unistd.h>
@@ -53,8 +52,8 @@ enum class ProcPidStatIdx : size_t
 
 long ProcessStat::query_time_elem(size_t idx, bool in_secs) const
 {
-    /// TODO: Protect against using indices that point to string or other incompatible types.
-    /// starttime is documented as long long, so it might need to be treated separately.
+    // TODO: Protect against using indices that point to string or other incompatible types.
+    // starttime is documented as long long, so it might need to be treated separately.
     if (in_secs)
     {
         return std::stol(data_[idx]) / sysconf(_SC_CLK_TCK);

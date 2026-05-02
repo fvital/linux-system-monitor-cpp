@@ -9,7 +9,7 @@ class Processor
 {
 public:
     /// Returns aggregate CPU utilization
-    float Utilization() const; // TODO: See src/processor.cpp
+    float Utilization() const;
 
     /// @param root Optional path to be used as root directory. Intended for testing.
     Processor &update_stat(const std::string &root = "/");
@@ -22,7 +22,6 @@ public:
     int get_procs_running() const;
     int get_total_cumulative_processes() const;
 
-    // TODO: Declare any necessary private members
 private:
     CpuStat agg_cpu_;
     std::vector<CpuStat> cpus_;

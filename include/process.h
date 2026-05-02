@@ -13,21 +13,20 @@ class Process
 {
 public:
     int Pid() const;
-    int Uid() const;              // TODO: See src/process.cpp
-    std::string User() const;     // TODO: See src/process.cpp
-    std::string Command() const;  // TODO: See src/process.cpp
-    float CpuUtilization() const; // TODO: See src/process.cpp
+    int Uid() const;
+    std::string User() const;
+    std::string Command() const;
+    float CpuUtilization() const;
     /// Memory utilization in MB
     /// @param precision Number of digits to include after decimal point.
-    std::string Ram(int precision = 2) const; // TODO: See src/process.cpp
-    long int UpTime() const;                  // TODO: See src/process.cpp
+    std::string Ram(int precision = 2) const;
+    long int UpTime() const;
 
     /// Sort by descending CPU utilization.
-    bool operator<(Process const &a) const; // TODO: See src/process.cpp
+    bool operator<(Process const &a) const;
     Process(int pid, const std::map<int, std::string> &user_map, const std::string &root = "/");
     Process &update_data(const std::map<int, std::string> &user_map, const std::string &root = "/");
 
-    // TODO: Declare any necessary private members
 private:
     int pid_;
     int uid_;

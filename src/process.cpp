@@ -11,17 +11,14 @@
 
 using std::string;
 
-// TODO: Return this process's ID
 int Process::Pid() const { return pid_; }
 int Process::Uid() const { return uid_; }
 
-// TODO: Return this process's CPU utilization
 float Process::CpuUtilization() const
 {
     return proc_stat_.utilization(root_);
 }
 
-// TODO: Return the command that generated this process
 string Process::Command() const
 {
     std::string line;
@@ -35,7 +32,6 @@ string Process::Command() const
     return line;
 }
 
-// TODO: Return this process's memory utilization
 string Process::Ram(int precision) const
 {
     std::stringstream stream;
@@ -43,17 +39,13 @@ string Process::Ram(int precision) const
     return stream.str();
 }
 
-// TODO: Return the user (name) that generated this process
 string Process::User() const { return user_; }
 
-// TODO: Return the age of this process (in seconds)
 long Process::UpTime() const
 {
     return proc_stat_.uptime(true, root_);
 }
 
-// TODO: Overload the "less than" comparison operator for Process objects
-// REMOVE: [[maybe_unused]] once you define the function
 bool Process::operator<(Process const &a) const
 {
     return CpuUtilization() > a.CpuUtilization();
@@ -112,8 +104,15 @@ Process &Process::parse_status(const std::string &root)
 
 Process &Process::update_data(const std::map<int, std::string> &user_map, const std::string &root)
 {
-    // TODO: look into/handle case of wrong/missing uid.
-    user_ = user_map.at(uid_);
+    auto user_it = user_map.find(uid_);
+    if (user_it == user_map.end())
+    {
+        user_ = "_unknown_";
+    }
+    else
+    {
+        user_ = user_it->second;
+    }
 
     std::string stat_filepath = root + LinuxParser::kProcDirectory + std::to_string(pid_) + LinuxParser::kStatFilename;
     std::ifstream statstream(stat_filepath);
