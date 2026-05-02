@@ -97,7 +97,9 @@ void NCursesDisplay::Display(System& system, int n) {
   WINDOW* process_window =
       newwin(3 + n, x_max - 1, system_window->_maxy + 1, 0);
 
-  while (1) {
+  while (1)
+  {
+    system.refresh();
     init_pair(1, COLOR_BLUE, COLOR_BLACK);
     init_pair(2, COLOR_GREEN, COLOR_BLACK);
     box(system_window, 0, 0);

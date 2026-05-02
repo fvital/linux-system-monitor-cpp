@@ -20,12 +20,12 @@ public:
     /// Memory utilization in MB
     /// @param precision Number of digits to include after decimal point.
     std::string Ram(int precision = 2) const;
-    long int UpTime() const;
+    double UpTime() const;
 
     /// Sort by descending CPU utilization.
     bool operator<(Process const &a) const;
-    Process(int pid, const std::map<int, std::string> &user_map, const std::string &root = "/");
-    Process &update_data(const std::map<int, std::string> &user_map, const std::string &root = "/");
+    Process(int pid, const std::map<int, std::string> &user_map, double sys_uptime, const std::string &root = "/");
+    Process &update_data(const std::map<int, std::string> &user_map, double sys_uptime, const std::string &root = "/");
 
 private:
     int pid_;

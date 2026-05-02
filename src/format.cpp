@@ -1,3 +1,4 @@
+#include <cmath>
 #include <iomanip>
 #include <sstream>
 #include <string>
@@ -6,11 +7,12 @@
 
 using std::string;
 
-string Format::ElapsedTime(long seconds)
+string Format::ElapsedTime(double seconds)
 {
-    int h = seconds / 3600;
-    int m = (seconds % 3600) / 60;
-    int s = seconds % 60;
+    int int_sec = round(seconds);
+    int h = int_sec / 3600;
+    int m = (int_sec % 3600) / 60;
+    int s = int_sec % 60;
 
     std::ostringstream oss;
     oss << std::setfill('0') << std::setw(2) << h << ":"

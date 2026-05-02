@@ -16,7 +16,7 @@ int Process::Uid() const { return uid_; }
 
 float Process::CpuUtilization() const
 {
-    return proc_stat_.utilization(root_);
+    return proc_stat_.utilization();
 }
 
 string Process::Command() const
@@ -41,9 +41,9 @@ string Process::Ram(int precision) const
 
 string Process::User() const { return user_; }
 
-long Process::UpTime() const
+double Process::UpTime() const
 {
-    return proc_stat_.uptime(true, root_);
+    return proc_stat_.uptime(true);
 }
 
 bool Process::operator<(Process const &a) const
@@ -51,10 +51,10 @@ bool Process::operator<(Process const &a) const
     return CpuUtilization() > a.CpuUtilization();
 }
 
-Process::Process(int pid, const std::map<int, std::string> &user_map, const std::string &root) : pid_{pid}, root_{root}
+Process::Process(int pid, const std::map<int, std::string> &user_map, double sys_uptime, const std::string &root) : pid_{pid}, root_{root}
 {
     parse_status(root_);
-    update_data(user_map, root_);
+    update_data(user_map, sys_uptime, root_);
 };
 
 Process &Process::parse_status(const std::string &root)
@@ -102,7 +102,7 @@ Process &Process::parse_status(const std::string &root)
     return *this;
 }
 
-Process &Process::update_data(const std::map<int, std::string> &user_map, const std::string &root)
+Process &Process::update_data(const std::map<int, std::string> &user_map, double sys_uptime, const std::string &root)
 {
     auto user_it = user_map.find(uid_);
     if (user_it == user_map.end())
@@ -113,7 +113,7 @@ Process &Process::update_data(const std::map<int, std::string> &user_map, const 
     {
         user_ = user_it->second;
     }
-
+    proc_stat_.set_sys_uptime(sys_uptime);
     std::string stat_filepath = root + LinuxParser::kProcDirectory + std::to_string(pid_) + LinuxParser::kStatFilename;
     std::ifstream statstream(stat_filepath);
     std::string line;

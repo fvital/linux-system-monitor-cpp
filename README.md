@@ -222,13 +222,19 @@ clock ticks, `true` divides by `sysconf(_SC_CLK_TCK)`.
 
 ### Promoting UpTime from long to double
 
-Since `/proc/uptime` provides values with sub-second precision, and other 
-time-related data given in jiffies or clock-ticks will also generate sub-second 
-values when converted, `LinuxParser::UpTime()` was promoted to `double`. 
-Since `ProcessStat::uptime()` and `utilization()` subtract and divide system uptime 
-to produce per-process figures, rounding errors could accumulate, so all internal 
-calculations are performed using `double` and converted to the desired datatype at 
-the destination.
+Since `/proc/uptime` provides values with sub-second precision, and other
+time-related data given in jiffies or clock-ticks will also generate sub-second
+values when converted, `LinuxParser::UpTime()` was promoted to `double`.
+Since `ProcessStat::uptime()` and `utilization()` subtract and divide system uptime
+to produce per-process figures, rounding errors could accumulate, so all internal
+calculations are performed using `double` and converted to the desired datatype at
+the destination. `Format::ElapsedTime()` was updated to accept `double` and uses
+`std::round()` before integer conversion to avoid truncation artifacts.
+
+Without explicit lifetime management, `/proc/uptime` would be read multiple times
+per display cycle — once by `System::UpTime()`, and once each for every process's
+`uptime()` and `utilization()` call — totaling 2N+1 reads per cycle. This is
+addressed by `System::refresh()` (see below).
 
 ### Process — three-file parsing per process
 
@@ -241,25 +247,35 @@ Each `Process` reads from three files on construction and each refresh:
 
 RAM is exposed in MB (`vm_size_ / 1024.0`) via `Ram(int precision = 2)` with
 configurable decimal precision. `operator<` sorts by descending CPU utilization.
-User lookup uses a `user_map_` passed in by `System` (built once from `/etc/passwd`), 
-avoiding a re-read of the `passwd` file per process. The resolved username is stored 
-in a private `user_` member and re-resolved from the map on each `update_data()` call.
+User lookup uses a `user_map_` passed in by `System` (built from `/etc/passwd` 
+and updated at the start of each cycle), avoiding a re-read of the `passwd` file 
+per process. The resolved username is stored in a private `user_` member and 
+re-resolved from the map on each `update_data()` call.
 
-### System — process lifecycle management
+System uptime is not read from `/proc/uptime` by `Process` — it is injected as a
+`double sys_uptime` parameter in both the constructor and `update_data()`. The value
+is forwarded to `ProcessStat::set_sys_uptime()`, which stores it for use in
+`uptime()` and `utilization()`. `Process::UpTime()` returns `double`.
 
-`Processes()` calls two private helpers on every refresh:
+### System — centralized refresh cycle
 
-- `clean_process_list()` — removes `Process` objects whose PID no longer appears
-  in `/proc`
-- `update_process_list()` — adds `Process` objects for new PIDs; calls
-  `update_data()` on existing ones
+`System::refresh()` is a public method called by `NCursesDisplay::Display()` at the
+top of each loop iteration. It is the single point that drives all per-cycle updates:
 
-`Kernel()` and `OperatingSystem()` are lazily cached — read once on the first
-call, then returned from member strings on subsequent calls. The user map is built 
-once in the constructor and passed to `Process` objects on construction and on each 
-`update_data()` call. `update_user_map()` exists as a private method but is not 
-currently called on refresh cycles, so user account changes during a session would 
-not be reflected without a restart.
+1. Reads `/proc/uptime` once and stores the result in `uptime_`
+2. Calls `cpu_.update_stat()` to refresh CPU jiffy counts
+3. Calls `update_user_map()` to refresh `/etc/passwd` mappings
+4. Calls `clean_process_list()` to remove PIDs that no longer appear in `/proc`
+5. Calls `update_process_list()`, passing `UpTime()` to each `Process` constructor
+   and `update_data()` call so processes receive the already-cached uptime value
+
+After `refresh()` returns, `Cpu()` and `Processes()` are pure accessors — they
+return the cached `cpu_` and `processes_` members without triggering any file I/O.
+This reduces `/proc/uptime` reads from 2N+1 per cycle (once for `System::UpTime()`
+plus two reads per process inside `ProcessStat`) to a single read per cycle.
+
+`Kernel()` and `OperatingSystem()` are lazily cached — read once on the first call,
+then returned from member strings on subsequent calls.
 
 ### Processor — single-pass /proc/stat parsing
 
@@ -267,7 +283,9 @@ The original `LinuxParser` approach would read `/proc/stat` separately for each 
 
 Note: `System::TotalProcesses()` counts numeric directories in `/proc` via `LinuxParser::Pids()` rather than using the processes field from `/proc/stat`, which counts all forks since boot rather than currently-alive processes.
 
-`Utilization()` is const and does not re-read the file — the caller controls the refresh rate by calling `update_stat()` explicitly.
+`Utilization()` is `const` and does not re-read the file — `update_stat()` is called
+once per cycle by `System::refresh()`, keeping data access and display logic
+separated.
 
 ### [[deprecated]] strategy for LinuxParser
 

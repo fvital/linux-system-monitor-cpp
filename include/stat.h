@@ -35,6 +35,7 @@ class ProcessStat
     using stat_datatype = std::array<std::string, 52>;
     stat_datatype data_ = {};
     long query_time_elem(size_t idx, bool in_secs = false) const;
+    double sys_uptime_ = 0;
 
 public:
     /// @param in_secs  If true, convert the result from clock ticks to seconds.
@@ -46,10 +47,10 @@ public:
     long total_time(bool in_secs = false) const;
     long starttime(bool in_secs = false) const;
 
-    double uptime(bool in_secs = true, const std::string &root = "/") const;
+    double uptime(bool in_secs = true) const;
 
     /// CPU utilization as a fraction of process uptime.
-    double utilization(const std::string &root = "/") const;
+    double utilization() const;
 
     friend std::istringstream &operator>>(std::istringstream &iss, ProcessStat &procstat);
     ProcessStat() = default;
@@ -57,6 +58,9 @@ public:
 
     /// @param iss Stringstream pointing to the first line of /proc/[pid]/stat.
     ProcessStat(std::istringstream &iss);
+
+    ProcessStat &set_sys_uptime(double v);
+    double get_sys_uptime() const;
 };
 
 /// @param iss Stringstream pointing to the first line of /proc/[pid]/stat.

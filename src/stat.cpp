@@ -103,21 +103,21 @@ long ProcessStat::starttime(bool in_secs) const
     return query_time_elem(static_cast<size_t>(ProcPidStatIdx::starttime), in_secs);
 }
 
-double ProcessStat::uptime(bool in_secs, const std::string &root) const
+double ProcessStat::uptime(bool in_secs) const
 {
     if (in_secs)
     {
-        return LinuxParser::UpTime(root) - static_cast<double>(starttime(false)) / static_cast<double>(sysconf(_SC_CLK_TCK));
+        return get_sys_uptime() - static_cast<double>(starttime(false)) / static_cast<double>(sysconf(_SC_CLK_TCK));
     }
     else
     {
-        return static_cast<double>(LinuxParser::UpTime(root)) * static_cast<double>(sysconf(_SC_CLK_TCK)) - static_cast<double>(starttime(false));
+        return get_sys_uptime() * static_cast<double>(sysconf(_SC_CLK_TCK)) - static_cast<double>(starttime(false));
     }
 }
 
-double ProcessStat::utilization(const std::string &root) const
+double ProcessStat::utilization() const
 {
-    return static_cast<double>(total_time(false)) / uptime(false, root);
+    return static_cast<double>(total_time(false)) / uptime(false);
 }
 
 std::istringstream &operator>>(std::istringstream &iss, ProcessStat &procstat)
@@ -135,3 +135,13 @@ ProcessStat::ProcessStat(std::istringstream &iss)
 }
 
 ProcessStat::ProcessStat(stat_datatype &&data) : data_{std::move(data)} {};
+
+ProcessStat &ProcessStat::set_sys_uptime(double v)
+{
+    sys_uptime_ = v;
+    return *this;
+}
+double ProcessStat::get_sys_uptime() const
+{
+    return sys_uptime_;
+}

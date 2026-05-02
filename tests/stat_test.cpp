@@ -39,6 +39,7 @@ TEST(CPUStatParse, cpu_total)
 TEST(ProcStatParse, test1)
 {
     ProcessStat proc_stat;
+    proc_stat.set_sys_uptime(LinuxParser::UpTime(kFixturePath));
     const int test_pid = 2599;
     std::string filepath = kFixturePath + LinuxParser::kProcDirectory + std::to_string(test_pid) + LinuxParser::kStatFilename;
     std::string line;
@@ -61,6 +62,7 @@ TEST(ProcStatParse, test1)
 TEST(ProcStatParse, test2)
 {
     ProcessStat proc_stat;
+    proc_stat.set_sys_uptime(LinuxParser::UpTime(kFixturePath));
     const int test_pid = 1234;
     std::string filepath = kFixturePath + LinuxParser::kProcDirectory + std::to_string(test_pid) + LinuxParser::kStatFilename;
     std::string line;

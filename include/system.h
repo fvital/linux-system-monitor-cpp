@@ -14,13 +14,14 @@ public:
   Processor &Cpu();
   std::vector<Process> &Processes();
   float MemoryUtilization();
-  long UpTime() const;
+  double UpTime() const;
   int TotalProcesses() const;
   int RunningProcesses();
   std::string Kernel();
   std::string OperatingSystem();
   System(const std::string &root = "/");
   std::string User(int uid) const;
+  System &refresh();
 
 private:
   Processor cpu_ = {};
@@ -32,6 +33,7 @@ private:
   System &clean_process_list(const std::string &root = "/");
   System &update_process_list(const std::string &root = "/");
   const std::string root_ = "/";
+  double uptime_ = 0;
 };
 
 #endif // SYSTEM_H

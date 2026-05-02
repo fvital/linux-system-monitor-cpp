@@ -20,13 +20,11 @@ using std::vector;
 
 Processor &System::Cpu()
 {
-    cpu_.update_stat();
     return cpu_;
 }
 
 vector<Process> &System::Processes()
 {
-    clean_process_list(root_).update_process_list(root_);
     return processes_;
 }
 
@@ -63,9 +61,9 @@ int System::RunningProcesses()
 
 int System::TotalProcesses() const { return LinuxParser::TotalProcesses(root_); }
 
-long System::UpTime() const
+double System::UpTime() const
 {
-    return static_cast<long>(std::round(LinuxParser::UpTime(root_)));
+    return uptime_;
 }
 System &System::update_user_map(const std::string &root)
 {
@@ -117,11 +115,11 @@ System &System::update_process_list(const std::string &root)
                                     { return proc.Pid() == pid; });
         if (proc_it == processes_.end())
         {
-            processes_.emplace_back(Process(pid, user_map_, root));
+            processes_.emplace_back(Process(pid, user_map_, UpTime(), root));
         }
         else
         {
-            proc_it->update_data(user_map_, root);
+            proc_it->update_data(user_map_, UpTime(), root);
         }
     }
 
@@ -144,7 +142,16 @@ std::string System::User(int uid) const
 
 System::System(const std::string &root) : root_{root}
 {
+    refresh();
+}
+
+System &System::refresh()
+{
+    uptime_ = LinuxParser::UpTime(root_);
+    cpu_.update_stat();
     update_user_map(root_);
     clean_process_list(root_);
     update_process_list(root_);
+
+    return *this;
 }

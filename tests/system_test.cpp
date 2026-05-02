@@ -24,7 +24,7 @@ TEST_F(SystemTest, UserMap)
 
 TEST_F(SystemTest, UpTime)
 {
-    EXPECT_EQ(453079, s1.UpTime());
+    EXPECT_EQ(453078.54, s1.UpTime());
 }
 
 TEST_F(SystemTest, TotalProcesses)
