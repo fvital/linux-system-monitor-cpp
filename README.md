@@ -117,7 +117,7 @@ modified as part of this project.
   worth addressing: `cmake_minimum_required` is set to 2.6 (circa 2008),
   `file(GLOB ...)` is used for sources (explicitly discouraged by CMake —
   silent build failures when files are added or removed), and there is no
-  `CMakePresets.json` for out-of-source builds. Plan: bump minimum to 3.22,
+  `CMakePresets.json` for out-of-source builds. Plan: bump minimum to 3.24,
   replace glob with explicit source listing, add `CMakePresets.json`
 - [ ] **Abstract base classes** — introduce interfaces via abstract classes and
   pure virtual functions to decouple the display layer from Linux-specific
@@ -137,7 +137,7 @@ modified as part of this project.
 | Dependency | Notes |
 |---|---|
 | GCC / G++ with C++17 support | GCC 7 or later; verify with `g++ --version` |
-| CMake | 3.22 or later; verify with `cmake --version` |
+| CMake | 3.24 or later; verify with `cmake --version` |
 | ncurses | Install via `sudo apt install libncurses5-dev libncursesw5-dev` |
 | Make | Standard on most Linux distributions |
 | Linux kernel (any version) | Required — this project reads from `/proc` directly |
